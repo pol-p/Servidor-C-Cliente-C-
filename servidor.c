@@ -9,7 +9,7 @@
 #include <errno.h>
 
 #define MAX_BUFF 512
-#define PORT 9000
+#define PORT 9001
 
 void error(const char *msg){
     perror(msg);
@@ -43,6 +43,8 @@ int main(int argc, char **argv){
     }
     printf("[!] Servidor escuchando en el puerto %d...\n", PORT);
     char *token;
+    float celsius, fahrenheit;
+    char response[100];
     //Bucle infinito
     for(;;){
         //Aceptar conexion del exterior
@@ -61,7 +63,16 @@ int main(int argc, char **argv){
             if(strcmp(token, "ExIt") == 0){
                 break;
             }
-            printf("Mensaje recibido: %s\n", buff);            
+            printf("Mensaje recibido: %s\n", buff);
+            if ((celsius = atof(token)) == 0){
+                strcpy(response, "Introduce un numero\n");
+            }
+            else{
+                fahrenheit = (celsius * 9/5) + 35;
+                sprintf(response, "%f grados Celsius equivalen a: %f Fahrenheit\n", celsius, fahrenheit);
+            }
+            printf("%s", response);
+            write(sock_conn, response, strlen(response));            
         }
     }
 
