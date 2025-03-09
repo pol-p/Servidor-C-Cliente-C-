@@ -9,7 +9,7 @@
 #include <errno.h>
 
 #define MAX_BUFF 512
-#define PORT 9001
+#define PORT 9000
 
 void error(const char *msg){
     perror(msg);
@@ -68,7 +68,7 @@ int main(int argc, char **argv){
                 strcpy(response, "Introduce un numero\n");
             }
             else{
-                fahrenheit = (celsius * 9/5) + 35;
+                fahrenheit = (celsius * 9 / 5) + 32; 
                 sprintf(response, "%f grados Celsius equivalen a: %f Fahrenheit\n", celsius, fahrenheit);
             }
             printf("%s", response);
