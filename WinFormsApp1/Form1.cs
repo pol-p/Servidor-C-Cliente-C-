@@ -8,7 +8,7 @@ namespace WinFormsApp1
     {
         // Constantes privadas para la IP y el puerto del servidor
         private const string ServerIp = "192.168.1.137"; // Dirección IP del servidor
-        private const int ServerPort = 9000; // Puerto del servidor
+        private const int ServerPort = 9001; // Puerto del servidor
 
         private Socket? clientSocket;
         public Form1()
@@ -26,7 +26,7 @@ namespace WinFormsApp1
         {
             //Pulsas el boton --> envia el mensaje al servidor
             string msg = textBox1.Text;
-
+            string response;
             //Ver si hay conexion
             if (clientSocket == null || !clientSocket.Connected)
             {
@@ -52,6 +52,10 @@ namespace WinFormsApp1
                 MessageBox.Show(ex.Message);
             }
 
+            byte[] msg2 = new byte[80];
+            clientSocket.Receive(msg2);
+            response = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+            MessageBox.Show(response);
 
         }
 
