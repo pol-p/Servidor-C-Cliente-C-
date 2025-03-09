@@ -42,7 +42,7 @@ int main(int argc, char **argv){
         error("Error en Listen");
     }
     printf("[!] Servidor escuchando en el puerto %d...\n", PORT);
-
+    char *token;
     //Bucle infinito
     for(;;){
         //Aceptar conexion del exterior
@@ -50,17 +50,19 @@ int main(int argc, char **argv){
         if (sock_conn < 0){
             error("Error al aceptar la conexion con el socket");
         }
+        for(;;){
+            ret = read(sock_conn, buff, sizeof(buff) - 1);
+            if (ret < 0){
+                error("Error al leer del socket");
+            }
 
-        ret = read(sock_conn, buff, sizeof(buff) - 1);
-        if (ret < 0){
-            error("Error al leer del socket");
+            buff[ret] = '\0';
+            token = strtok(buff, "/");
+            if(strcmp(token, "ExIt") == 0){
+                break;
+            }
+            printf("Mensaje recibido: %s\n", buff);            
         }
-
-        buff[ret] = '\0';
-
-        printf("Mensaje recibido: %s\n", buff);
-
-        close(sock_conn);
     }
 
     close(sock_listen);
